@@ -2,6 +2,7 @@ import { module, test } from 'qunit';
 import { visit, click, triggerKeyEvent, typeIn, currentURL, waitUntil, find } from '@ember/test-helpers';
 
 import fireBaseFixture from 'juice-core/tests/fixtures/firebase-default';
+import setupMirage from 'ember-cli-mirage/test-support/setup-mirage';
 
 import {
   initAcceptanceTest
@@ -9,6 +10,7 @@ import {
 
 module('Acceptance | Productions | Show', function(hooks) {
   initAcceptanceTest(hooks, fireBaseFixture);
+  setupMirage(hooks);
 
   hooks.beforeEach(async () => {
     await visit('/a/productions/production-id');
@@ -57,5 +59,26 @@ module('Acceptance | Productions | Show', function(hooks) {
     await waitUntil(() => !find('[data-test-node-children] [data-test-line-item-row]'));
 
     assert.dom('[data-test-node-children] [data-test-line-item-row]').exists({count: 0});
+  });
+
+  test('be able to print', async function (assert) {
+    assert.expect(1);
+
+    this.server.post('https://allDocsEndpoint.com/generate-all', function(schema)  {
+      let body = JSON.parse(this.request.requestBody);
+      // const attributes = this.normalizedRequestAttrs();
+      // const expectedAttributes = {
+      //   email: 'example@email.com',
+      //   password: 'secretpassword'
+      // };
+
+      // assert.deepEqual(attributes, expectedAttributes);
+
+      console.log(body);
+      // debugger;
+      // return schema.users.create(attributes);
+    });
+
+    await click('[data-test-print-button]');
   });
 });

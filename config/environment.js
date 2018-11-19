@@ -85,6 +85,10 @@ module.exports = function(environment) {
     ENV.urlAfterLogout = 'http://localhost:4200/login';
   }
 
+  ENV['ember-cli-mirage'] = {
+    enabled: false
+  };
+
   if (environment === 'test') {
     // Testem prefers this...
     ENV.locationType = 'none';
@@ -95,6 +99,14 @@ module.exports = function(environment) {
 
     ENV.APP.rootElement = '#ember-testing';
     ENV.APP.autoboot = false;
+
+    ENV['ember-cli-mirage'] = {
+      enabled: true
+    };
+
+    ENV.docService = {
+      allDocsEndpoint: 'https://allDocsEndpoint.com/generate-all'
+    }
   }
 
   if (environment === 'production') {
